@@ -14,11 +14,11 @@ phases:
   build:
     commands:
       - echo build process started now
-      - git checkout $BRANCH
-      - ng build --configuration=$ENVIRONMENT
+      - git checkout master
+      - ng build --configuration=production
   post_build:
     commands:
       - echo build process finished, we should uplload to S3 now
       - cd dist/$APP_NAME
       - ls -la
-      - aws s3 sync . s3://stockmanta/$ENVIRONMENT --delete
+      - aws s3 sync . s3://stockmanta/production --delete
