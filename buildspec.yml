@@ -23,4 +23,4 @@ phases:
       - echo build process finished, we should uplload to S3 now
       - cd dist/$APP_NAME
       - ls -la
-      - aws s3 sync . s3://stockmanta --delete
+      - aws s3 sync . s3://stockmanta.xyz --delete
