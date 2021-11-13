@@ -1,0 +1,60 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+.sidebar {
+  height: 100%;
+  width: 256px;
+  padding: 10px 15px 15px 15px;
+  background-color: #f7f8fd;
+
+  .sidebar-title {
+    padding-bottom: 10px;
+
+    p {
+      color: #51459e;
+      font-size: 22px;
+      font-weight: 600;
+    }
+  }
+
+  .search-ticker {
+    margin-bottom: 8px;
+    input {
+      height: 40px;
+      width: 100%;
+      padding-left: 10px;
+      border: none;
+      border-radius: 5px;
+
+      &::placeholder {
+        color: #938c8c;
+        font-size: 14px;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+.ticker-list-container {
+  height: calc(100vh - 115px);
+  padding: 20px 0;
+  border-radius: 5px;
+  background-color: #fff;
+
+  p {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    margin-bottom: 3px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f7f8fd;
+    }
+  }
+}
