@@ -127,6 +127,36 @@ export class DashboardComponent implements OnInit {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        scales: {
+          x: {
+            display: true,
+            title: {
+              display: true,
+              text: 'Period',
+              color: '#51459E',
+              font: {
+                family: 'Times',
+                size: 20,
+                style: 'normal',
+                lineHeight: 1.2,
+              },
+            },
+          },
+          y: {
+            display: true,
+            title: {
+              display: true,
+              text: 'End of Day Price',
+              color: '#51459E',
+              font: {
+                family: 'Times',
+                size: 20,
+                style: 'normal',
+                lineHeight: 1.2,
+              },
+            },
+          },
+        },
         plugins: {
           legend: {
             position: 'top',
