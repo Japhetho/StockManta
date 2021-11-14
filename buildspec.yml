@@ -13,6 +13,10 @@ phases:
       - if [ -z "${BRANCH}" ]; then echo "BRANCH not set" && exit 1 ; fi
       - if [ -z "${ENVIRONMENT}" ]; then echo "ENVIRONMENT not set" && exit 1 ; fi
       - npm install && npm install -g @angular/cli
+  pre_build:
+    commands:
+      - npm run test-headless
+      - npm run e2e
   build:
     commands:
       - echo build process started now
