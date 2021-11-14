@@ -15,6 +15,7 @@ phases:
       - npm install && npm install -g @angular/cli
       - npm install -g npm-run-all
       - npm install -g start-server-and-test
+      - npm install -g http-server
   pre_build:
     commands:
       - git checkout $BRANCH
