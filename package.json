@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "private": true,
   "dependencies": {
@@ -20,6 +22,7 @@
     "@angular/router": "~13.0.0",
     "bootstrap": "^5.1.3",
     "chart.js": "^3.6.0",
+    "cypress": "^9.0.0",
     "dayjs": "^1.10.7",
     "flatpickr": "^4.6.9",
     "rxjs": "~7.4.0",
