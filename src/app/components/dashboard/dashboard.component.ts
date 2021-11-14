@@ -47,12 +47,10 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.dashboardService.getAllTickers().subscribe((res: TickerModel[]) => {
       this.allTickers = res;
-      console.log('tickers', res[0].ticker);
     });
     this.dashboardService
       .getTickerData('A', 'annual', this.closePrice, this.adjClosePrice)
       .subscribe((tickerRes: any) => {
-        console.log(tickerRes);
         this.selectedTicker = tickerRes.dataset.dataset_code;
         this.selectedTickerName =
           this.getSelectedTickerName(tickerRes.dataset.name) + `)`;
@@ -67,13 +65,7 @@ export class DashboardComponent implements OnInit {
           tickerValues.push(ticker[1]);
         });
 
-        console.log('Ticker labels', tickerLabels);
-        console.log('Ticker values', tickerValues);
-
         this.getTickerChart(tickerLabels, tickerValues);
-
-        console.log(tickerLabels.slice(-1));
-        console.log(tickerLabels[0]);
 
         this.dataStartDate = dayjs(
           `${tickerLabels[0]}`,
@@ -176,7 +168,6 @@ export class DashboardComponent implements OnInit {
     this.dashboardService
       .getTickerData(ticker, 'annual', this.closePrice, this.adjClosePrice)
       .subscribe((newTickerRes: any) => {
-        console.log(newTickerRes);
         this.selectedTicker = newTickerRes.dataset.dataset_code;
         this.selectedTickerName =
           this.getSelectedTickerName(newTickerRes.dataset.name) + `)`;
@@ -189,9 +180,6 @@ export class DashboardComponent implements OnInit {
           tickerLabels.push(ticker[0]);
           tickerValues.push(ticker[1]);
         });
-
-        console.log('Ticker labels', tickerLabels);
-        console.log('Ticker values', tickerValues);
 
         this.getTickerChart(tickerLabels, tickerValues);
 
@@ -233,9 +221,6 @@ export class DashboardComponent implements OnInit {
   onFilter(): void {
     this.chart.destroy();
 
-    console.log('Start date', this.filterDateForm.value.dataStart);
-    console.log('End date', this.filterDateForm.value.dataEnd);
-
     const start_date = this.filterDateForm.value.dataStart;
     const end_date = this.filterDateForm.value.dataEnd;
 
@@ -249,7 +234,6 @@ export class DashboardComponent implements OnInit {
         end_date
       )
       .subscribe((newTickerRes: any) => {
-        console.log(newTickerRes);
         this.selectedTicker = newTickerRes.dataset.dataset_code;
         this.selectedTickerName =
           this.getSelectedTickerName(newTickerRes.dataset.name) + `)`;
@@ -262,9 +246,6 @@ export class DashboardComponent implements OnInit {
           tickerLabels.push(ticker[0]);
           tickerValues.push(ticker[1]);
         });
-
-        console.log('Ticker labels', tickerLabels);
-        console.log('Ticker values', tickerValues);
 
         this.getTickerChart(tickerLabels, tickerValues);
 

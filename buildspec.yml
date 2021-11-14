@@ -12,6 +12,14 @@ phases:
       - echo install process started
       - if [ -z "${BRANCH}" ]; then echo "BRANCH not set" && exit 1 ; fi
       - if [ -z "${ENVIRONMENT}" ]; then echo "ENVIRONMENT not set" && exit 1 ; fi
+        # Get Chrome Information
+      - curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+      - echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
+      - apt-get -y update
+      # Install chrome
+      - apt-get -y install google-chrome-stable
+      # Installation of all required packages.
+      - apt-get install -yq gconf-service xvfb libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
       - npm install && npm install -g @angular/cli
       - npm install -g npm-run-all
       - npm install -g start-server-and-test
@@ -19,6 +27,7 @@ phases:
   pre_build:
     commands:
       - git checkout $BRANCH
+      - npm run test
       - npm run e2e
   build:
     commands:
