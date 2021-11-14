@@ -15,12 +15,12 @@ phases:
       - npm install && npm install -g @angular/cli
   pre_build:
     commands:
+      - git checkout $BRANCH
       - npm run test-headless
       - npm run e2e
   build:
     commands:
       - echo build process started now
-      - git checkout $BRANCH
       - ng build --configuration=$ENVIRONMENT
   post_build:
     commands:
