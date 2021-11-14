@@ -1,21 +1,249 @@
 <div class="dashboard-container">
-  <div class="sidebar-bar col-2">
-    <div class="sidebar">
-      <div class="sidebar-title">
-        <p>Stock Manta</p>
+  <div class="sidebar">
+    <div class="sidebar-title">
+      <p>Stock Manta</p>
+    </div>
+    <div class="search-ticker">
+      <input
+        type="text"
+        placeholder="Type here to search"
+        aria-label="Username"
+        aria-describedby="search-addon"
+        [(ngModel)]="searchText"
+      />
+    </div>
+    <div class="ticker-list-container">
+      <div class="ticker-list">
+        <p
+          *ngFor="let ticker of allTickers | tickersFilter: searchText"
+          class="ticker-item"
+          (click)="getNewTickerData(ticker.ticker)"
+        >
+          {{ ticker.ticker }}
+        </p>
       </div>
-      <div class="search-ticker">
-        <input type="text" placeholder="Type hear to search" />
-      </div>
-      <div class="ticker-list-container">
-        <div class="search-ticker">
-          <input type="text" />
+    </div>
+  </div>
+  <div class="main-content">
+    <div class="content-title">
+      <p class="selected-ticker">{{ selectedTickerName }}</p>
+      <div class="date-section">
+        <div class="calendar-icon dropdown">
+          <svg
+            width="35"
+            height="35"
+            viewBox="0 0 35 35"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            id="dateDropdownMenuButton"
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="outside"
+            aria-expanded="false"
+            (click)="openPickers()"
+          >
+            <path
+              d="M30.625 0H4.375C1.95875 0 0 1.95875 0 4.375V30.625C0 33.0412 1.95875 35 4.375 35H30.625C33.0412 35 35 33.0412 35 30.625V4.375C35 1.95875 33.0412 0 30.625 0ZM2.1875 8.4375C2.1875 7.40197 3.16688 6.5625 4.375 6.5625H30.625C31.8331 6.5625 32.8125 7.40197 32.8125 8.4375V30.9375C32.8125 31.973 31.8331 32.8125 30.625 32.8125H4.375C3.16688 32.8125 2.1875 31.973 2.1875 30.9375V8.4375Z"
+              fill="#51459E"
+            />
+            <path
+              d="M14.2188 15.3125C15.4269 15.3125 16.4062 14.3331 16.4062 13.125C16.4062 11.9169 15.4269 10.9375 14.2188 10.9375C13.0106 10.9375 12.0312 11.9169 12.0312 13.125C12.0312 14.3331 13.0106 15.3125 14.2188 15.3125Z"
+              fill="#51459E"
+            />
+            <path
+              d="M20.7812 15.3125C21.9894 15.3125 22.9688 14.3331 22.9688 13.125C22.9688 11.9169 21.9894 10.9375 20.7812 10.9375C19.5731 10.9375 18.5938 11.9169 18.5938 13.125C18.5938 14.3331 19.5731 15.3125 20.7812 15.3125Z"
+              fill="#51459E"
+            />
+            <path
+              d="M27.3438 15.3125C28.5519 15.3125 29.5312 14.3331 29.5312 13.125C29.5312 11.9169 28.5519 10.9375 27.3438 10.9375C26.1356 10.9375 25.1562 11.9169 25.1562 13.125C25.1562 14.3331 26.1356 15.3125 27.3438 15.3125Z"
+              fill="#51459E"
+            />
+            <path
+              d="M7.65625 21.875C8.86437 21.875 9.84375 20.8956 9.84375 19.6875C9.84375 18.4794 8.86437 17.5 7.65625 17.5C6.44813 17.5 5.46875 18.4794 5.46875 19.6875C5.46875 20.8956 6.44813 21.875 7.65625 21.875Z"
+              fill="#51459E"
+            />
+            <path
+              d="M14.2188 21.875C15.4269 21.875 16.4062 20.8956 16.4062 19.6875C16.4062 18.4794 15.4269 17.5 14.2188 17.5C13.0106 17.5 12.0312 18.4794 12.0312 19.6875C12.0312 20.8956 13.0106 21.875 14.2188 21.875Z"
+              fill="#51459E"
+            />
+            <path
+              d="M20.7812 21.875C21.9894 21.875 22.9688 20.8956 22.9688 19.6875C22.9688 18.4794 21.9894 17.5 20.7812 17.5C19.5731 17.5 18.5938 18.4794 18.5938 19.6875C18.5938 20.8956 19.5731 21.875 20.7812 21.875Z"
+              fill="#51459E"
+            />
+            <path
+              d="M27.3438 21.875C28.5519 21.875 29.5312 20.8956 29.5312 19.6875C29.5312 18.4794 28.5519 17.5 27.3438 17.5C26.1356 17.5 25.1562 18.4794 25.1562 19.6875C25.1562 20.8956 26.1356 21.875 27.3438 21.875Z"
+              fill="#51459E"
+            />
+            <path
+              d="M7.65625 28.4375C8.86437 28.4375 9.84375 27.4581 9.84375 26.25C9.84375 25.0419 8.86437 24.0625 7.65625 24.0625C6.44813 24.0625 5.46875 25.0419 5.46875 26.25C5.46875 27.4581 6.44813 28.4375 7.65625 28.4375Z"
+              fill="#51459E"
+            />
+            <path
+              d="M14.2188 28.4375C15.4269 28.4375 16.4062 27.4581 16.4062 26.25C16.4062 25.0419 15.4269 24.0625 14.2188 24.0625C13.0106 24.0625 12.0312 25.0419 12.0312 26.25C12.0312 27.4581 13.0106 28.4375 14.2188 28.4375Z"
+              fill="#51459E"
+            />
+            <path
+              d="M20.7812 28.4375C21.9894 28.4375 22.9688 27.4581 22.9688 26.25C22.9688 25.0419 21.9894 24.0625 20.7812 24.0625C19.5731 24.0625 18.5938 25.0419 18.5938 26.25C18.5938 27.4581 19.5731 28.4375 20.7812 28.4375Z"
+              fill="#51459E"
+            />
+          </svg>
+          <div
+            class="dropdown-menu dropdown-menu-end main-calendar-dropdown"
+            aria-labelledby="dateDropdownMenuButton"
+          >
+            <form [formGroup]="filterDateForm" (ngSubmit)="onFilter()">
+              <div class="calendar-dropdown-item">
+                <div class="inputs-section">
+                  <div class="start-input-section">
+                    <div class="inputs-title">
+                      <p>Select Start Date:</p>
+                    </div>
+                    <input
+                      type="text"
+                      id="dataStartDate"
+                      formControlName="dataStart"
+                    />
+                  </div>
+                  <div class="end-input-section">
+                    <div class="inputs-title">
+                      <p>Select End Date:</p>
+                    </div>
+                    <input
+                      type="text"
+                      id="dataEndDate"
+                      formControlName="dataEnd"
+                    />
+                  </div>
+                </div>
+                <div class="buttons-section">
+                  <div class="select-collapse-period-section">
+                    <div class="dropdown">
+                      <button
+                        type="button"
+                        class="btn select-collapse-btn"
+                        id="selectCollapseMenuButton"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        {{ selectedCollapsePeriod | titlecase }}
+                        <svg
+                          width="13"
+                          height="7"
+                          viewBox="0 0 13 7"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M0.146447 0.146447C0.341709 -0.0488155 0.658291 -0.0488155 0.853553 0.146447L6.5 5.79289L12.1464 0.146447C12.3417 -0.0488155 12.6583 -0.0488155 12.8536 0.146447C13.0488 0.341709 13.0488 0.658291 12.8536 0.853553L6.85355 6.85355C6.65829 7.04882 6.34171 7.04882 6.14645 6.85355L0.146447 0.853553C-0.0488155 0.658291 -0.0488155 0.341709 0.146447 0.146447Z"
+                            fill="white"
+                          />
+                        </svg>
+                      </button>
+                      <div
+                        class="dropdown-menu"
+                        aria-labelledby="selectCollapseMenuButton"
+                      >
+                        <div
+                          class="select-collapse-item"
+                          (click)="selectCollapsePeriod('daily')"
+                        >
+                          <p>Daily</p>
+                        </div>
+                        <div
+                          class="select-collapse-item"
+                          (click)="selectCollapsePeriod('weekly')"
+                        >
+                          <p>Weekly</p>
+                        </div>
+                        <div
+                          class="select-collapse-item"
+                          (click)="selectCollapsePeriod('monthly')"
+                        >
+                          <p>Monthly</p>
+                        </div>
+                        <div
+                          class="select-collapse-item"
+                          (click)="selectCollapsePeriod('quarterly')"
+                        >
+                          <p>Quarterly</p>
+                        </div>
+                        <div
+                          class="select-collapse-item"
+                          (click)="selectCollapsePeriod('annual')"
+                        >
+                          <p>Annual</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="dailyCollapseSelected"
+                      class="daily-collapse-warning"
+                    >
+                      <p>
+                        Please note that the maximum number of rows that can be
+                        retrieved is 10,000
+                      </p>
+                    </div>
+                  </div>
+                  <button class="btn filter-dates-btn">Filter</button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-        <div class="ticker-list">
-          <p class="ticker-item">MSFT</p>
-          <p class="ticker-item">MSFT</p>
-          <p class="ticker-item">MSFT</p>
-          <p class="ticker-item">MSFT</p>
+        <div class="selected-date">
+          <p>
+            {{ dataStartDate | date: "mediumDate" }} -
+            {{ dataEndDate | date: "mediumDate" }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-title">
+        <div class="dropdown">
+          <div
+            class="select-close-price"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <p>{{ tickerPrice }}</p>
+            <svg
+              width="13"
+              height="7"
+              viewBox="0 0 13 7"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M0.146447 0.146447C0.341709 -0.0488155 0.658291 -0.0488155 0.853553 0.146447L6.5 5.79289L12.1464 0.146447C12.3417 -0.0488155 12.6583 -0.0488155 12.8536 0.146447C13.0488 0.341709 13.0488 0.658291 12.8536 0.853553L6.85355 6.85355C6.65829 7.04882 6.34171 7.04882 6.14645 6.85355L0.146447 0.853553C-0.0488155 0.658291 -0.0488155 0.341709 0.146447 0.146447Z"
+                fill="white"
+              />
+            </svg>
+          </div>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <div
+              class="price-type-item"
+              (click)="getSelectedPriceType('closing')"
+            >
+              <p>Closing Price</p>
+            </div>
+            <div
+              class="price-type-item"
+              (click)="getSelectedPriceType('adj-closing')"
+            >
+              <p>Adj. Closing Price</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-content-container">
+        <div class="chart-content">
+          <canvas id="tickerChart">{{ chart }}</canvas>
         </div>
       </div>
     </div>
