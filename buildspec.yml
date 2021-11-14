@@ -16,7 +16,6 @@ phases:
   pre_build:
     commands:
       - git checkout $BRANCH
-      - npm run test-headless
       - npm run e2e
   build:
     commands:
