@@ -45,9 +45,11 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // returns a list of ticker names. total ticker names is 3200
     this.dashboardService.getAllTickers().subscribe((res: TickerModel[]) => {
       this.allTickers = res;
     });
+    // returns data (i.e. end of day stock prices) for a specific ticker either daily, weekly, monthly, quarterly or annually
     this.dashboardService
       .getTickerData('A', 'annual', this.closePrice, this.adjClosePrice)
       .subscribe((tickerRes: any) => {
@@ -64,9 +66,9 @@ export class DashboardComponent implements OnInit {
           tickerLabels.push(ticker[0]);
           tickerValues.push(ticker[1]);
         });
-
+        /** passes a specific ticker's end of day stock price and date to the chartjs canvas for visualization */
         this.getTickerChart(tickerLabels, tickerValues);
-
+        /** Converts dates from Date objects to isostrings which is required for displaying in the form */
         this.dataStartDate = dayjs(
           `${tickerLabels[0]}`,
           'YYYY-MM-DD'
@@ -87,6 +89,7 @@ export class DashboardComponent implements OnInit {
   }
 
   openPickers(): any {
+    /** adds start date and end date forms for filtering end of day stock prices for a specific ticker/company */
     flatpickr('#dataStartDate', {
       minDate: dayjs(`${this.oldestDate}`).toISOString(),
       maxDate: dayjs(`${this.newestDate}`).toISOString(),
@@ -102,6 +105,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getTickerChart(labels: string[], data: number[]): any {
+    /** This function creates a chart based on the api data passed to it as arguments */
     this.chart = new Chart(this.ctx, {
       type: 'line',
       data: {
@@ -163,6 +167,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getNewTickerData(ticker: string): void {
+    /** This function gets called whenever the user searches/selects a new ticker from the ticker list.
+     * It filters API data based on the selected ticker, destroys the existing chart and creates a new chart based on the selected ticker.
+     */
     this.chart.destroy();
 
     this.dashboardService
@@ -198,11 +205,18 @@ export class DashboardComponent implements OnInit {
   }
 
   getSelectedTickerName(tickerName: string): string {
+    /** This function takes the full ticker name from the API and removes irrelevant data e.g.
+     * for Microsoft the API returns "Microsoft Corporation (MSFT) Prices, Dividends, Splits and Trading Volume",
+     * this function splits the information after the opening ( and returns "Microsoft Corporation"
+     */
     const splitTickerName = tickerName.split(') ');
     return splitTickerName[0];
   }
 
   getSelectedPriceType(priceType: string): any {
+    /** This function sets the ticker price variable to either closing or adjusted closing price based on user selection
+     * This is then displayed on the chart
+     */
     if (priceType === 'closing') {
       this.tickerPrice = 'Close Price';
       this.adjClosePrice = false;
@@ -219,6 +233,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onFilter(): void {
+    /** This function is for filtering end-of-day stock price data based on selected start/end dates by the user */
     this.chart.destroy();
 
     const start_date = this.filterDateForm.value.dataStart;

@@ -9,6 +9,10 @@ import { FILTERED_TICKER_PRICES } from 'src/assets/test_data/test-filtered-data'
 import { TICKER } from 'src/assets/test_data/tickers-test-data';
 
 describe('DashboardService', () => {
+  /**
+   * Unit test for the dashboard service
+   */
+
   let dashboardService: DashboardService,
     httpTestingController: HttpTestingController;
   let tickerUrl =
@@ -17,6 +21,9 @@ describe('DashboardService', () => {
     'https://data.nasdaq.com/api/v3/datasets/WIKI/MSFT.json?collapse=monthly&column_index=4&api_key=2sg42HWd2egYKWVwAqbb&order=asc&start_date=1986-03-31&end_date=1986-06-30';
 
   beforeEach(() => {
+    /**
+     * This will be called before every test. It initializes the dashboard service and the httptestingcontroller
+     */
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [DashboardService],
@@ -26,6 +33,9 @@ describe('DashboardService', () => {
   });
 
   it('should retrieve all tickers', () => {
+    /**
+     * Test to ensure all ticker names data is retrieved from the ticker json file
+     */
     expect(dashboardService).toBeTruthy();
 
     dashboardService.getAllTickers().subscribe((tickers) => {
@@ -43,6 +53,9 @@ describe('DashboardService', () => {
   });
 
   it('should return all data for one ticker for the entire time range', () => {
+    /**
+     * Test to ensure end-of-day stock price data for a specific ticker is returned from the earliest to the latest date
+     */
     dashboardService
       .getTickerData('MSFT', 'monthly', true, false)
       .subscribe((ticker_data) => {
@@ -62,6 +75,9 @@ describe('DashboardService', () => {
   });
 
   it('should return all data for one ticker for a filtered time range', () => {
+    /**
+     * Test to ensure end-of-day stock price data is filtered based on a specific time range (i.e. start and end date)
+     */
     dashboardService
       .getFilteredTickerData(
         'MSFT',
@@ -92,6 +108,9 @@ describe('DashboardService', () => {
   });
 
   afterEach(() => {
+    /**
+     * Gets called at the end of every test to verify that no unmatched requests are outstanding
+     */
     httpTestingController.verify();
   });
 });

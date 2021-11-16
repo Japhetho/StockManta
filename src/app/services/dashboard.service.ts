@@ -8,6 +8,7 @@ import { TickerModel } from '../models/ticker.model';
   providedIn: 'root',
 })
 export class DashboardService {
+  /** This service is for fetching end-of-day stock price data from the Quandl API */
   tickersUrl: string = 'assets/data/tickers.json';
 
   constructor(private http: HttpClient) {}
@@ -18,6 +19,10 @@ export class DashboardService {
     close: boolean,
     adjClose: boolean
   ): Observable<any> {
+    /**
+     * Fetches API data for a specific ticker/company either on a daily, weekly, monthly, quarterly or annual basis.
+     * It also returns either the close price or the adjusted close price for that specific ticker/company.
+     */
     const selectedTicker = ticker;
     const apiKey = '2sg42HWd2egYKWVwAqbb';
     let pricingColumn: number;
@@ -40,6 +45,9 @@ export class DashboardService {
   }
 
   getAllTickers(): Observable<TickerModel[]> {
+    /**
+     * Fetches ticker symbols from json file stored in the assets folder.
+     */
     return this.http.get<TickerModel[]>(this.tickersUrl);
   }
 
@@ -51,6 +59,9 @@ export class DashboardService {
     start: string,
     end: string
   ): Observable<any> {
+    /**
+     * Similar to getTickerData function but in addition this fetches filtered ticker data based on specific start/end dates.
+     */
     const selectedTicker = ticker;
     const apiKey = '2sg42HWd2egYKWVwAqbb';
     let pricingColumn: number;

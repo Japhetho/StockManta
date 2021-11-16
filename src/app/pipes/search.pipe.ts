@@ -22,6 +22,7 @@ export class SearchPipe implements PipeTransform {
 
     // tslint:disable-next-line:no-shadowed-variable
     function checkInside(item: any, term: string): any {
+      /** This function filters tickers based on the text passed by the user in the search field */
       if (
         typeof item === 'string' &&
         item.toString().toLowerCase().includes(toCompare)
