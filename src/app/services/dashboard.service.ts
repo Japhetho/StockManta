@@ -8,7 +8,9 @@ import { TickerModel } from '../models/ticker.model';
   providedIn: 'root',
 })
 export class DashboardService {
-  /** This service is for fetching end-of-day stock price data from the Quandl API */
+  /**
+   * This service is for fetching end-of-day stock price data from the Quandl API
+   */
   tickersUrl: string = 'assets/data/tickers.json';
 
   constructor(private http: HttpClient) {}

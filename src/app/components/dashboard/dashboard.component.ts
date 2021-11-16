@@ -12,6 +12,7 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+  // Initializing variables used within the component
   allTickers: TickerModel[] = [];
   searchText = '';
   collapseAnnual = true;
@@ -33,6 +34,9 @@ export class DashboardComponent implements OnInit {
   dailyCollapseSelected = false;
 
   filterDateForm = this.formBuilder.group({
+    /**
+     * Initializes an angular form builder that will contain date pickers for the start and end dates for filtering end-of-day stock data
+     */
     dataStart: ['', [Validators.required]],
     dataEnd: ['', Validators.required],
   });
@@ -41,22 +45,26 @@ export class DashboardComponent implements OnInit {
     private dashboardService: DashboardService,
     private formBuilder: FormBuilder
   ) {
+    // imports and registers all the controllers, elements, scales and plugins that are going to be used by Chartjs
     Chart.register(...registerables);
   }
 
   ngOnInit(): void {
-    // returns a list of ticker names. total ticker names is 3200
+    /**
+     * returns a list of ticker names. total ticker names is 3200
+     */
     this.dashboardService.getAllTickers().subscribe((res: TickerModel[]) => {
       this.allTickers = res;
     });
-    // returns data (i.e. end of day stock prices) for a specific ticker either daily, weekly, monthly, quarterly or annually
+    /**
+     * returns API data (i.e. end of day stock prices) for a specific ticker either daily, weekly, monthly, quarterly or annually
+     */
     this.dashboardService
       .getTickerData('A', 'annual', this.closePrice, this.adjClosePrice)
       .subscribe((tickerRes: any) => {
         this.selectedTicker = tickerRes.dataset.dataset_code;
         this.selectedTickerName =
           this.getSelectedTickerName(tickerRes.dataset.name) + `)`;
-        // this.getTickerChart(tick)
 
         const tickerData = tickerRes.dataset.data;
         let tickerLabels: string[] = [];
@@ -66,9 +74,13 @@ export class DashboardComponent implements OnInit {
           tickerLabels.push(ticker[0]);
           tickerValues.push(ticker[1]);
         });
-        /** passes a specific ticker's end of day stock price and date to the chartjs canvas for visualization */
+        /**
+         * Passes a specific ticker's end of day stock price and date to the chartjs canvas for visualization
+         */
         this.getTickerChart(tickerLabels, tickerValues);
-        /** Converts dates from Date objects to isostrings which is required for displaying in the form */
+        /**
+         * Converts dates from Date objects to isostrings which is required for displaying in the form
+         */
         this.dataStartDate = dayjs(
           `${tickerLabels[0]}`,
           'YYYY-MM-DD'
@@ -89,7 +101,9 @@ export class DashboardComponent implements OnInit {
   }
 
   openPickers(): any {
-    /** adds start date and end date forms for filtering end of day stock prices for a specific ticker/company */
+    /**
+     * Adds start date and end date forms for filtering end of day stock prices for a specific ticker/company
+     */
     flatpickr('#dataStartDate', {
       minDate: dayjs(`${this.oldestDate}`).toISOString(),
       maxDate: dayjs(`${this.newestDate}`).toISOString(),
@@ -105,7 +119,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getTickerChart(labels: string[], data: number[]): any {
-    /** This function creates a chart based on the api data passed to it as arguments */
+    /**
+     * This function creates a chart based on the api data passed to it as labels and data arguments
+     */
     this.chart = new Chart(this.ctx, {
       type: 'line',
       data: {
@@ -221,13 +237,11 @@ export class DashboardComponent implements OnInit {
       this.tickerPrice = 'Close Price';
       this.adjClosePrice = false;
       this.closePrice = true;
-      // this.getNewTickerData(this.selectedTicker);
       this.onFilter();
     } else if (priceType === 'adj-closing') {
       this.tickerPrice = 'Adj. Close Price';
       this.adjClosePrice = true;
       this.closePrice = false;
-      // this.getNewTickerData(this.selectedTicker)
       this.onFilter();
     }
   }
